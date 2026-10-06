@@ -10,7 +10,8 @@ st.title("System Access Dashboard")
 csv_path = "daily_login_counts.csv"
 try:
     df = pd.read_csv(csv_path)
-    df['Date'] = pd.to_datetime(df['Date'])
+    #df['Date'] = pd.to_datetime(df['Date'])
+    df['Date'] = pd.to_datetime(df['Date'], format='mixed')
     
     # 3. Create top-level summary metrics
     col1, col2, col3 = st.columns(3)
@@ -21,18 +22,19 @@ try:
     st.divider()
 
     # 4. Build the interactive Plotly graph
-    fig = px.line(df, x='Date', y='Count', title="Daily Logins Over Time", markers=True)
+    fig = px.bar(df, x='Date', y='Count', title="Daily Logins Over Time", text_auto=True)
     
     # Customize the graph's aesthetic
-    fig.update_layout(
-        plot_bgcolor="rgba(0,0,0,0)",
-        paper_bgcolor="rgba(0,0,0,0)",
-        xaxis_title="Date",
-        yaxis_title="Total Logins",
-        title_x=0.5,
-        xaxis=dict(showgrid=False),
-        yaxis=dict(showgrid=True, gridcolor='lightgray')
-    )
+    # fig.update_layout(
+    #     plot_bgcolor="rgba(0,0,0,0)",
+    #     paper_bgcolor="rgba(0,0,0,0)",
+    #     xaxis_title="Date",
+    #     yaxis_title="Total Logins",
+    #     title_x=0.5,
+    #     xaxis=dict(showgrid=False),
+    #     yaxis=dict(showgrid=True, gridcolor='lightgray')
+    # )
+    fig.update_traces(marker_color='#1f77b4', textposition='outside')
     
     # Render the graph
     st.plotly_chart(fig, use_container_width=True)
